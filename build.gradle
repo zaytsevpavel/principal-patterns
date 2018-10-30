@@ -1,0 +1,47 @@
+group 'com.pzaytsev'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'scala'
+apply plugin: 'application'
+apply plugin: 'docker'
+
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+mainClassName = "com.pzaytsev.Main"
+
+
+repositories{
+    jcenter()
+}
+
+configurations {
+    scalaCompilerPlugin
+    kindProjectorPlugin
+}
+
+dependencies{
+    compile 'org.scala-lang:scala-library:2.12.6'
+    kindProjectorPlugin "org.spire-math:kind-projector_2.12:0.9.7"
+
+}
+
+tasks.withType(ScalaCompile){
+    scalaCompileOptions.additionalParameters = [
+
+            "-Xplugin:" + configurations.kindProjectorPlugin.asPath,
+            "-Ypartial-unification"
+    ]
+}
+
+dependencies{
+    compile 'org.scala-lang:scala-library:2.12.6'
+    compile 'org.typelevel:cats-core_2.12:1.4.0'
+
+
+}
+
